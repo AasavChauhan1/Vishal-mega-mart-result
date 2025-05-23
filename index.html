@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishal Mega Mart - Security Guard Results (Official Spoof)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .print-container {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            margin: auto;
+            padding: 15mm; /* Adjusted padding */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: white;
+            position: relative; /* For pseudo-elements like watermark */
+        }
+        /* Subtle watermark/background pattern for "official" feel */
+        .print-container::before {
+            content: "VMM CONFIDENTIAL SPOOF";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 5rem; /* Large text */
+            color: rgba(229, 62, 62, 0.05); /* Very light red */
+            font-weight: bold;
+            z-index: 0;
+            pointer-events: none; /* So it doesn't interfere with text selection */
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .printable-area, .printable-area * {
+                visibility: visible;
+            }
+            .printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: auto;
+                margin: 0;
+                padding: 10mm;
+                box-shadow: none;
+                border: none;
+            }
+            .print-container::before { /* Ensure watermark prints */
+                color: rgba(200, 0, 0, 0.07) !important; /* Slightly darker for print */
+            }
+            .no-print, .no-print * {
+                display: none !important;
+            }
+            .print-container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #ef4444; /* VMM Red */
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .selected-animation {
+            animation: selectedPulse 1.5s infinite;
+        }
+        @keyframes selectedPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-red-600 via-yellow-400 to-red-700 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-2xl relative z-10"> <div class="text-center mb-8">
+            <img src="https://placehold.co/200x80/f87171/ffffff?text=VISHAL+MEGA+MART" alt="Vishal Mega Mart Logo" class="mx-auto mb-4 rounded-lg shadow-md" id="logo">
+            <h1 class="text-3xl md:text-4xl font-bold text-red-700">Vishal Mega Mart</h1>
+            <p class="text-lg md:text-xl text-gray-700">Security Guard Recruitment - *Highly* Provisional Results</p>
+            <p class="text-xs md:text-sm text-gray-500">Strictly Confidential (and Entirely Fictional) - For Maximum Entertainment</p>
+        </div>
+
+        <div id="formSection">
+            <form id="resultForm" class="space-y-6">
+                <div>
+                    <label for="candidateName" class="block text-sm font-medium text-gray-700">Enter Full Candidate Name:</label>
+                    <input type="text" id="candidateName" name="candidateName" required class="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="e.g., Bholuram 'Eagle-Eye' Singh">
+                </div>
+                <div>
+                    <label for="city" class="block text-sm font-medium text-gray-700">Nearest VMM Outlet (City/Town):</label>
+                    <input type="text" id="city" name="city" required class="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="e.g., Nagpur (Near Sitabuldi)">
+                </div>
+                <div>
+                    <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth (for Age Verification, obviously):</label>
+                    <input type="date" id="dob" name="dob" required class="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                </div>
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out shadow-lg hover:shadow-xl transform hover:scale-105">
+                    Reveal My Destiny!
+                </button>
+            </form>
+        </div>
+
+        <div id="loadingSection" class="hidden text-center py-10">
+            <div class="spinner mx-auto mb-4"></div>
+            <p id="loadingMessage" class="mt-2 text-lg font-semibold text-gray-700">Cross-referencing with our highly advanced (imaginary) database...</p>
+            <p class="text-sm text-gray-500">This critical process requires intense concentration. And maybe a Samosa.</p>
+            <div class="w-full bg-gray-200 rounded-full h-3 mt-4 overflow-hidden">
+                <div id="progressBar" class="bg-red-500 h-3 rounded-full transition-all duration-1000 ease-linear" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div id="resultCardSection" class="hidden printable-area">
+            <div class="print-container border border-gray-400 rounded-lg p-6 bg-white relative"> <div class="relative z-10">
+                    <div class="text-center mb-6 border-b-2 border-red-600 pb-4">
+                        <img src="https://placehold.co/180x70/f87171/ffffff?text=VMM+OFFICIAL+SEAL+(SORT+OF)" alt="Official VMM Logo" class="mx-auto mb-3 rounded-md border-2 border-red-200">
+                        <h2 class="text-2xl font-bold text-red-700 tracking-wider">ULTRA-OFFICIAL PERFORMANCE EVALUATION</h2>
+                        <p class="text-md text-gray-600">Security Vigilance & Aptitude Test (SVAT-2025 Extravaganza)</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 mb-6 text-sm">
+                        <div><strong>Candidate Name:</strong> <span id="reportName" class="font-semibold"></span></div>
+                        <div><strong>Application ID:</strong> VMM-SG-<span id="reportAppId" class="font-semibold"></span></div>
+                        <div><strong>Assessment Location:</strong> <span id="reportCity" class="font-semibold"></span></div>
+                        <div><strong>Date of Birth (Verified):</strong> <span id="reportDob" class="font-semibold"></span></div>
+                        <div><strong>Result Declaration Date:</strong> <span id="reportDate" class="font-semibold"></span></div>
+                        <div><strong>Exam Adjudicator:</strong> The Algorithm of Amusement</div>
+                    </div>
+
+                    <hr class="my-5 border-gray-300">
+
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3 text-center bg-red-100 py-2 rounded-md">Detailed Performance Metrics</h3>
+                    <div class="space-y-3 text-sm mb-5">
+                        <div id="performanceMetrics" class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3"></div>
+                    </div>
+                    
+                    <div id="specialCommendationSection" class="hidden my-5 p-3 border-2 rounded-md">
+                        <h4 class="text-lg font-bold mb-1 text-center" id="specialTitle"></h4>
+                        <p class="text-sm text-center italic" id="specialMessage"></p>
+                    </div>
+
+                    <hr class="my-5 border-gray-300">
+
+                    <div class="text-center mt-6 bg-gray-50 p-4 rounded-lg">
+                        <p class="text-lg font-medium text-gray-700">Grand Total Score: <span id="reportTotalScore" class="font-bold text-2xl text-red-600"></span> out of <span id="reportMaxScore" class="font-semibold"></span></p>
+                        <p class="text-3xl font-extrabold mt-2 py-2" id="reportOverallResult"></p>
+                        <p class="text-xs text-gray-500 mt-4 px-4">
+                            Disclaimer: This document is a sophisticated work of fiction, generated for amusement. No actual employment, security guard positions, or life decisions should be based on this. Vishal Mega Mart (the real one) is probably awesome and not affiliated with this silliness.
+                        </p>
+                    </div>
+                    <div class="mt-8 text-right text-xs">
+                        <p>Sincerely (not really),</p>
+                        <img src="https://placehold.co/150x40/EFEFEF/AAAAAA?text=Highly+Official+Squiggle" alt="Signature" class="h-8 mt-1 inline-block">
+                        <p id="signerTitle" class="font-semibold"></p>
+                        <p id="signerDepartment"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center no-print space-x-3">
+                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out shadow-md hover:shadow-lg">
+                    Print Official-ish Report
+                </button>
+                <button onclick="resetForm()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2.5 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out shadow-md hover:shadow-lg">
+                    Try My Luck Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const formSection = document.getElementById('formSection');
+        const loadingSection = document.getElementById('loadingSection');
+        const resultCardSection = document.getElementById('resultCardSection');
+        const resultForm = document.getElementById('resultForm');
+        const progressBar = document.getElementById('progressBar');
+        const loadingMessageElement = document.getElementById('loadingMessage');
+        const specialCommendationSection = document.getElementById('specialCommendationSection');
+        const specialTitle = document.getElementById('specialTitle');
+        const specialMessage = document.getElementById('specialMessage');
+
+
+        const loadingMessages = [
+            "Consulting the ancient scrolls of retail wisdom...",
+            "Aligning the shopping cart chakras...",
+            "Calculating your 'Bargain Hunter' coefficient...",
+            "Checking if you know the difference between MRP and 'Our Price'...",
+            "Analyzing your potential for saying 'Welcome to Vishal Mega Mart!' 1000 times a day..."
+        ];
+
+        const performanceCriteria = [
+            { name: "Vigilant Aisle Monitoring", max: 100, remarksGood: ["Eyes like a hawk!", "Master of aisle surveillance.", "Nothing escapes your gaze!"], remarksBad: ["A bit spacey.", "Focus needs sharpening.", "Distracted by shiny objects."] },
+            { name: "Customer De-escalation Fu", max: 75, remarksGood: ["Calm in chaos.", "Diffuses situations expertly.", "Master of polite redirection."], remarksBad: ["Gets flustered easily.", "Argumentative tendencies.", "Needs more 'Zen'."] },
+            { name: "Lost Child Protocol Adherence", max: 50, remarksGood: ["Reunites families like a pro!", "Child-whisperer.", "Handles 'Code Adam' flawlessly."], remarksBad: ["Confuses children with mannequins.", "Panics slightly.", "Needs 'Lost & Found' refresher."] },
+            { name: "Shoplifter Spotting Intuition", max: 150, remarksGood: ["Sixth sense for sticky fingers!", "Catches them red-handed (almost).", "Born store detective."], remarksBad: ["Too trusting.", "Sees shoplifters everywhere (even in reflections).", "Needs 'Advanced Observation' module."] },
+            { name: "Enthusiasm for 'Price Check!'", max: 50, remarksGood: ["Eager to assist!", "Price check champion.", "Knows all the PLU codes (probably)."], remarksBad: ["Sighs audibly.", "Hides when 'Price Check' is called.", "Needs 'Customer Service Smile' training."] },
+            { name: "Shopping Cart Herding Skills", max: 75, remarksGood: ["Cart wrangler extraordinaire!", "No cart left behind.", "Master of the cart corral."], remarksBad: ["Lets carts roam free.", "Often outsmarted by rogue carts.", "Believes carts are sentient."] },
+            { name: "Knowledge of Obscure Discount Stacking", max: 60, remarksGood: ["Finds deals others miss!", "Coupon connoisseur.", "Maximizes savings like a legend."], remarksBad: ["Pays full price (gasp!).", "Confused by 'Buy 1 Get 1'.", "Needs 'Advanced Bargainology'."] },
+            { name: "Ability to Look Imposingly Stationary", max: 40, remarksGood: ["Statue-like stillness.", "Projects authority through immobility.", "Master of the 'stern gaze'." ], remarksBad: ["Fidgets constantly.", "Looks a bit too friendly.", "Mistaken for a customer often."]}
+        ];
+        
+        const signerTitles = ["Chief Officer of Vigilance & Valuables", "Supreme Head of Anti-Pilferage Operations", "Director-General of Aisle Integrity", "Grand Master of Queue Management"];
+        const signerDepartments = ["Department of Perpetual Inventory (Imaginary Wing)", "Bureau of Questionable Customer Complaints", "Ministry of Misplaced Price Tags", "The Esteemed Council of Shopping Cart Order"];
+        
+        const specialCommendations = [
+            { title: "🌟 Golden Whistle Award! 🌟", message: "For demonstrating unparalleled skill in looking busy during peak hours. Truly an inspiration!", type: "good" },
+            { title: "🏆 Cart Control Commendation! 🏆", message: "Successfully negotiated the return of a rogue shopping cart from three blocks away. Heroic!", type: "good" },
+            { title: "📜 Scroll of Supreme Observation! 📜", message: "Correctly identified a mispriced packet of biscuits, saving the company 0.50 paisa. Monumental!", type: "good" }
+        ];
+        const specialWarnings = [
+            { title: "⚠️ Official Admonishment! ⚠️", message: "Observed attempting to use a barcode scanner as a laser pointer. Further training required.", type: "bad" },
+            { title: "🚩 Red Flag Report! 🚩", message: "Found napping behind a pyramid of detergent boxes. Discipline score heavily impacted.", type: "bad" },
+            { title: "🚨 Final Caution! 🚨", message: "Suspected of teaching the mannequins to unionize. This is not conducive to a harmonious retail environment.", type: "bad" }
+        ];
+
+
+        resultForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const candidateName = document.getElementById('candidateName').value;
+            const city = document.getElementById('city').value;
+            const dob = document.getElementById('dob').value;
+
+            formSection.classList.add('hidden');
+            loadingSection.classList.remove('hidden');
+            resultCardSection.classList.add('hidden');
+            
+            let messageIndex = 0;
+            loadingMessageElement.textContent = loadingMessages[messageIndex];
+            const messageInterval = setInterval(() => {
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+                loadingMessageElement.textContent = loadingMessages[messageIndex];
+            }, 1500); // Change message every 1.5 seconds
+
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 10; // Simulate faster progress for effect
+                progressBar.style.width = Math.min(progress, 100) + '%';
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    clearInterval(messageInterval);
+                    setTimeout(() => {
+                        generateResults(candidateName, city, dob);
+                        loadingSection.classList.add('hidden');
+                        resultCardSection.classList.remove('hidden');
+                        progressBar.style.width = '0%';
+                    }, 500); 
+                }
+            }, 500); // Update progress bar every 0.5 seconds for 5s total
+        });
+
+        function getRandomScore(max) {
+            // Skew scores slightly higher for more fun "pass" results
+            return Math.floor(Math.random() * (max * 0.4) + (max * 0.6)); // Score between 60% and 100% of max
+        }
+
+        function generateResults(name, city, dob) {
+            document.getElementById('reportName').textContent = name;
+            document.getElementById('reportCity').textContent = city;
+            try {
+                document.getElementById('reportDob').textContent = new Date(dob).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            } catch (e) {
+                document.getElementById('reportDob').textContent = "Not Specified"; // Fallback for invalid date
+            }
+            document.getElementById('reportAppId').textContent = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('reportDate').textContent = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+            const performanceMetricsDiv = document.getElementById('performanceMetrics');
+            performanceMetricsDiv.innerHTML = ''; 
+
+            let totalScore = 0;
+            let maxPossibleScore = 0;
+
+            performanceCriteria.forEach(criterion => {
+                const score = getRandomScore(criterion.max);
+                totalScore += score;
+                maxPossibleScore += criterion.max;
+                
+                const percentage = (score / criterion.max) * 100;
+                let remark = "";
+                if (percentage >= 75) { // Adjusted threshold for "good" remarks due to skewed scores
+                    remark = criterion.remarksGood[Math.floor(Math.random() * criterion.remarksGood.length)];
+                } else if (percentage >= 50) {
+                     remark = "Solid effort. Keep it up!";
+                } else { // This branch will be less likely with skewed scores
+                    remark = criterion.remarksBad[Math.floor(Math.random() * criterion.remarksBad.length)];
+                }
+
+                const metricHTML = `
+                    <div class="p-3 bg-gray-50 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-semibold text-gray-700">${criterion.name}:</span>
+                            <span class="font-bold text-lg ${percentage >= 70 ? 'text-green-600' : (percentage >= 50 ? 'text-yellow-600' : 'text-red-600')}">
+                                ${score} / ${criterion.max}
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 italic">"${remark}"</p>
+                    </div>
+                `;
+                performanceMetricsDiv.innerHTML += metricHTML;
+            });
+
+            document.getElementById('reportTotalScore').textContent = totalScore;
+            document.getElementById('reportMaxScore').textContent = maxPossibleScore;
+            document.getElementById('signerTitle').textContent = signerTitles[Math.floor(Math.random() * signerTitles.length)];
+            document.getElementById('signerDepartment').textContent = signerDepartments[Math.floor(Math.random() * signerDepartments.length)];
+
+            // Special Commendation/Warning
+            if (Math.random() < 0.33) { // 33% chance for a special message
+                const isCommendation = Math.random() < 0.6; // 60% chance of commendation, 40% warning
+                const messagePool = isCommendation ? specialCommendations : specialWarnings;
+                const chosenMessage = messagePool[Math.floor(Math.random() * messagePool.length)];
+                
+                specialTitle.textContent = chosenMessage.title;
+                specialMessage.textContent = chosenMessage.message;
+                specialCommendationSection.className = `my-5 p-3 border-2 rounded-md ${isCommendation ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`;
+                specialTitle.className = `text-lg font-bold mb-1 text-center ${isCommendation ? 'text-green-700' : 'text-red-700'}`;
+                specialCommendationSection.classList.remove('hidden');
+            } else {
+                specialCommendationSection.classList.add('hidden');
+            }
+
+            const overallResult = document.getElementById('reportOverallResult');
+            if (Math.random() > 0.3 || (totalScore / maxPossibleScore) > 0.65) { // Higher chance to pass
+                overallResult.textContent = "STATUS: OVERWHELMINGLY SELECTED! Welcome Aboard!";
+                overallResult.className = "text-3xl font-extrabold mt-2 py-2 text-green-600 selected-animation";
+            } else {
+                overallResult.textContent = "STATUS: FURTHER EVALUATION REQUIRED (Maybe Next Year!).";
+                overallResult.className = "text-3xl font-extrabold mt-2 py-2 text-yellow-600"; // Changed from red to yellow for a softer "fail"
+            }
+        }
+        
+        function resetForm() {
+            resultForm.reset();
+            formSection.classList.remove('hidden');
+            loadingSection.classList.add('hidden');
+            resultCardSection.classList.add('hidden');
+            specialCommendationSection.classList.add('hidden');
+            document.getElementById('logo').src = 'https://placehold.co/200x80/f87171/ffffff?text=VISHAL+MEGA+MART';
+            progressBar.style.width = '0%';
+        }
+
+        document.getElementById('candidateName').addEventListener('input', function(e) {
+            const name = e.target.value.toLowerCase();
+            const logo = document.getElementById('logo');
+            if (name.includes("ceo") || name.includes("owner") || name.includes("director")) {
+                 logo.src = 'https://placehold.co/200x80/f87171/ffffff?text=Right+This+Way,+Sir/Ma\'am!';
+            } else if (name.length > 15) {
+                 logo.src = 'https://placehold.co/200x80/f87171/ffffff?text=Very+Distinguished+Name!';
+            } else if (name.length === 0) {
+                 logo.src = 'https://placehold.co/200x80/f87171/ffffff?text=VISHAL+MEGA+MART';
+            }
+        });
+    </script>
+</body>
+</html>
